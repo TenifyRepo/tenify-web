@@ -4,8 +4,8 @@ import { Separator } from "@/components/ui/separator";
 
 export function Sidebar() {
   return (
-    <aside className="hidden h-full w-60 shrink-0 flex-col border-r border-border bg-background md:flex">
-      <div className="flex h-[4.5rem] items-center px-4">
+    <aside className="hidden h-full w-60 shrink-0 flex-col border-r border-border bg-white md:flex">
+      <div className="flex h-14 items-center bg-white px-4 sm:h-[3.75rem]">
         <Logo href="/dashboard" variant="icon" />
       </div>
       <Separator />

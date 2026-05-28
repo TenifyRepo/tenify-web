@@ -28,7 +28,7 @@ export function MobileNav() {
         }
       />
       <SheetContent side="left" className="w-72 p-0">
-        <SheetHeader className="border-b border-border px-4 py-4 text-left">
+        <SheetHeader className="border-b border-border bg-white px-4 py-4 text-left">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <Logo href="/dashboard" variant="icon" />
         </SheetHeader>

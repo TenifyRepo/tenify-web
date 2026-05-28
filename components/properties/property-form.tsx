@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 
 import {
@@ -150,12 +151,8 @@ export function PropertyForm({ property, mode }: PropertyFormProps) {
       </fieldset>
 
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Button
-          type="button"
-          variant="outline"
-          render={<a href="/properties" />}
-        >
-          Cancel
+        <Button type="button" variant="outline" asChild>
+          <Link href="/properties">Cancel</Link>
         </Button>
         <Button type="submit" disabled={pending}>
           {pending

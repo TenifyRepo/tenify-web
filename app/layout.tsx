@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   description:
     "Simplify renting. Streamline living. Property and tenant management for landlords.",
   icons: {
-    icon: "/tenify-icon.png",
-    apple: "/tenify-icon.png",
+    icon: "/tenify-header.png",
+    apple: "/tenify-header.png",
   },
 };
 

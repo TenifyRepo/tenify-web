@@ -44,11 +44,19 @@ create table public.units (
   id uuid primary key default gen_random_uuid(),
   property_id uuid not null references public.properties (id) on delete cascade,
   landlord_id uuid not null references public.landlords (id) on delete cascade,
-  label text not null,
+  name text not null,
+  type text check (
+    type is null
+    or type in ('apartment', 'room', 'studio', 'house', 'office', 'other')
+  ),
   bedrooms smallint,
   bathrooms smallint,
+  parking_bays smallint,
   monthly_rent numeric(12, 2),
-  is_vacant boolean not null default true,
+  status text not null default 'vacant' check (
+    status in ('vacant', 'occupied', 'maintenance')
+  ),
+  notes text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -62,16 +70,21 @@ create index units_landlord_id_idx on public.units (landlord_id);
 create table public.tenants (
   id uuid primary key default gen_random_uuid(),
   landlord_id uuid not null references public.landlords (id) on delete cascade,
-  full_name text not null,
+  unit_id uuid references public.units (id) on delete set null,
+  first_name text not null,
+  last_name text not null default '',
   email text,
   phone text,
   id_number text,
+  emergency_contact_name text,
+  emergency_contact_phone text,
   notes text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
 create index tenants_landlord_id_idx on public.tenants (landlord_id);
+create index tenants_unit_id_idx on public.tenants (unit_id);
 
 -- ---------------------------------------------------------------------------
 -- Leases
@@ -79,20 +92,24 @@ create index tenants_landlord_id_idx on public.tenants (landlord_id);
 create table public.leases (
   id uuid primary key default gen_random_uuid(),
   landlord_id uuid not null references public.landlords (id) on delete cascade,
+  property_id uuid not null references public.properties (id) on delete restrict,
   unit_id uuid not null references public.units (id) on delete restrict,
   tenant_id uuid not null references public.tenants (id) on delete restrict,
   start_date date not null,
   end_date date,
   monthly_rent numeric(12, 2) not null,
-  deposit numeric(12, 2),
-  status text not null default 'active' check (
-    status in ('draft', 'active', 'ended', 'cancelled')
+  deposit_amount numeric(12, 2),
+  status text not null default 'draft' check (
+    status in ('draft', 'active', 'expired', 'terminated')
   ),
+  signed_date date,
+  notes text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
 create index leases_landlord_id_idx on public.leases (landlord_id);
+create index leases_property_id_idx on public.leases (property_id);
 create index leases_unit_id_idx on public.leases (unit_id);
 create index leases_tenant_id_idx on public.leases (tenant_id);
 

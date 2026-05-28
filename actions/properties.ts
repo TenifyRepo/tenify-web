@@ -9,6 +9,7 @@ import {
   propertySchema,
   type PropertyFormValues,
 } from "@/lib/validations/property";
+import type { Property } from "@/types/database";
 
 export type PropertyActionState = {
   error?: string;
@@ -115,6 +116,7 @@ export async function updateProperty(
   }
 
   revalidatePath("/properties");
+  revalidatePath(`/properties/${propertyId}`);
   revalidatePath(`/properties/${propertyId}/edit`);
   revalidatePath("/dashboard");
   redirect("/properties");
@@ -141,9 +143,12 @@ export async function deleteProperty(propertyId: string) {
   }
 
   revalidatePath("/properties");
+  revalidatePath(`/properties/${propertyId}`);
   revalidatePath("/dashboard");
   return { success: true };
 }
+
+export type PropertyWithUnitCount = Property & { unit_count: number };
 
 export async function getProperties() {
   const landlordId = await getLandlordId();
@@ -151,7 +156,7 @@ export async function getProperties() {
 
   const { data, error } = await supabase
     .from("properties")
-    .select("*")
+    .select("*, units(count)")
     .eq("landlord_id", landlordId)
     .order("created_at", { ascending: false });
 
@@ -159,7 +164,16 @@ export async function getProperties() {
     throw new Error(error.message);
   }
 
-  return data;
+  return data.map((row) => {
+    const record = row as Property & { units: { count: number }[] };
+    const unitCount = record.units?.[0]?.count ?? 0;
+    const { units, ...property } = record;
+    void units;
+    return {
+      ...property,
+      unit_count: unitCount,
+    };
+  });
 }
 
 export async function getProperty(propertyId: string) {

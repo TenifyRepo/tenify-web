@@ -26,15 +26,15 @@ const features = [
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-50 border-b border-border/60 bg-background/95 backdrop-blur">
-        <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between px-4 sm:px-6">
+      <header className="sticky top-0 z-50 border-b border-border/60 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/90">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:h-[3.75rem] sm:px-6">
           <Logo variant="icon" priority />
           <nav className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" render={<Link href="/login" />}>
-              Sign in
+            <Button variant="ghost" size="sm" asChild>
+              <Link href="/login">Sign in</Link>
             </Button>
-            <Button size="sm" render={<Link href="/dashboard" />}>
-              Open app
+            <Button size="sm" asChild>
+              <Link href="/dashboard">Open app</Link>
             </Button>
           </nav>
         </div>
@@ -63,17 +63,14 @@ export default function LandingPage() {
               use.
             </p>
             <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button size="lg" render={<Link href="/properties/new" />}>
-                Add your first property
-                <ArrowRight className="size-4" />
+              <Button size="lg" asChild>
+                <Link href="/properties/new">
+                  Add your first property
+                  <ArrowRight className="size-4" />
+                </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-card"
-                render={<Link href="/dashboard" />}
-              >
-                Go to dashboard
+              <Button size="lg" variant="outline" className="bg-card" asChild>
+                <Link href="/dashboard">Go to dashboard</Link>
               </Button>
             </div>
           </div>

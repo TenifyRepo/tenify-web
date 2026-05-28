@@ -13,9 +13,11 @@ export function EmptyProperties() {
       <p className="mt-1 max-w-sm text-sm text-muted-foreground">
         Add your first property to start managing units and tenants.
       </p>
-      <Button className="mt-6" render={<Link href="/properties/new" />}>
-        <Plus className="size-4" />
-        Add property
+      <Button className="mt-6" asChild>
+        <Link href="/properties/new">
+          <Plus className="size-4" />
+          Add property
+        </Link>
       </Button>
     </div>
   );

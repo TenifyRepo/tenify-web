@@ -1,6 +1,8 @@
 import {
+  Banknote,
   Building2,
   FileText,
+  FolderOpen,
   LayoutDashboard,
   Receipt,
   Users,
@@ -20,11 +22,7 @@ export const mainNav: NavItem[] = [
   { title: "Properties", href: "/properties", icon: Building2 },
   { title: "Tenants", href: "/tenants", icon: Users },
   { title: "Leases", href: "/leases", icon: FileText },
-  {
-    title: "Invoices",
-    href: "/invoices",
-    icon: Receipt,
-    disabled: true,
-    badge: "Soon",
-  },
+  { title: "Invoices", href: "/invoices", icon: Receipt },
+  { title: "Payments", href: "/payments", icon: Banknote },
+  { title: "Documents", href: "/documents", icon: FolderOpen },
 ];

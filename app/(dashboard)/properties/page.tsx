@@ -27,9 +27,11 @@ export default async function PropertiesPage() {
         title="Properties"
         description="All buildings and addresses you manage."
       >
-        <Button render={<Link href="/properties/new" />}>
-          <Plus className="size-4" />
-          Add property
+        <Button asChild>
+          <Link href="/properties/new">
+            <Plus className="size-4" />
+            Add property
+          </Link>
         </Button>
       </PageHeader>
 

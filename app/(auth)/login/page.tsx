@@ -39,12 +39,8 @@ export default function LoginPage() {
             in <code className="rounded bg-muted px-1 py-0.5">.env.local</code>{" "}
             for local development.
           </p>
-          <Button
-            variant="outline"
-            className="w-full"
-            render={<Link href="/dashboard" />}
-          >
-            Continue to dashboard
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/dashboard">Continue to dashboard</Link>
           </Button>
         </CardContent>
       </Card>

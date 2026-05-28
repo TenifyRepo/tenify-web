@@ -1,22 +1,31 @@
+import { getDevLandlordId } from "@/lib/supabase/landlord-data";
 import { createClient } from "@/lib/supabase/server";
 
 /**
  * Resolves the current landlord ID (same as auth.users.id).
- * Uses Supabase session when available; falls back to DEV_LANDLORD_ID in development.
+ * When DEV_LANDLORD_ID is set, returns it immediately (no cookie/session read).
  */
 export async function getLandlordId(): Promise<string> {
+  const devLandlordId = getDevLandlordId();
+  if (devLandlordId) {
+    return devLandlordId;
+  }
+
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (user?.id) {
-    return user.id;
-  }
+    const { data: landlord } = await supabase
+      .from("landlords")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
 
-  const devLandlordId = process.env.DEV_LANDLORD_ID;
-  if (process.env.NODE_ENV === "development" && devLandlordId) {
-    return devLandlordId;
+    if (landlord?.id) {
+      return user.id;
+    }
   }
 
   throw new Error(
